@@ -11,7 +11,10 @@ private:
 	double real;
 	double image;
 public:
-	complex() {};
+	complex() {
+		real=0;
+		image=0;
+	};
 	complex(double r, double i)
 	{
 		real = r;
