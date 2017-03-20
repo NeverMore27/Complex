@@ -70,5 +70,22 @@ SCENARIO("summ")
 	b=b.summ(a);
 	REQUIRE(b== c);
 }
+SCENARIO("mult") 
+{
+	complex b(3, 3), c(6,6);
+	b=b.mult(3);
+	REQUIRE(b==c);
+}
 
+SCENARIO("div") 
+{
+	complex b(3, 3), c(1,1);
+	b=b.div(3);
+	REQUIRE(b==c);
+}
+SCENARIO("diff") {
+	complex a(9, 9), b(3, 3), f(6, 6);
+	a=a.diff(b);
+	REQUIRE(f == a);
+}
 
