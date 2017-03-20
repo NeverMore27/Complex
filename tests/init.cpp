@@ -48,7 +48,7 @@ SCENARIO("/")
 SCENARIO("==") 
 {
 	complex a(3, 3);
-	complexb (a);
+	complex b (a);
 	REQUIRE(a == b);
 }
 
