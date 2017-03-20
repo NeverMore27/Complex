@@ -1,187 +1,84 @@
-#include "matrix.hpp"
+#include "complex.hpp"
 
-matrix:: matrix ()
+
+void complex::print(ostream &out)
 {
-	this->matr = nullptr;
-	n = m = 0;
+	out << real << "+" << image << "i" << endl;
 }
-matrix::matrix(int n1, int m1)
+complex complex::mult(int k) const
 {
-	m = m1;
-	n = n1;
-	matr = new double*[n];
-	for (int i = 0; i < n; i++)
-	{
-		matr[i] = new double[m];
-	}
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			matr[i][j] = 0;
-};
-matrix::matrix(matrix &ob)
-{
-	m = ob.m;
-	n = ob.n;
-	matr = new double*[n];
-	for (int i = 0; i < n; i++)
-	{
-		matr[i] = new double[m];
-	}
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			matr[i][j] = ob.matr[i][j];
-};
-matrix:: ~matrix ()
-{
-	if (matr != nullptr)
-	{
-		for (int i = 0; i < n; i++)
-		{
-			delete[] matr[i];
-		}
-		delete[] matr;
-	}
+	return complex(real*k, k*image);
 }
-void matrix::print(ostream &out)const
+complex complex::div(int k) const
 {
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < m; j++)
-			out << matr[i][j] << "\t";
-		out << "\n";
-	}
+	return complex(real / k, image / k);
 }
-matrix::matrix(std::string name)
+complex complex::summ(complex b) const
 {
-
-	ifstream file(name);
-	int space = 0, num = 0;
-	double h;
-	char r;
-	while (!file.eof())
-	{
-		file >> h;
-		num++;
-	}
-	file.seekg(0, ios::beg);
-	while (!file.eof())
-	{
-		file.get(r);
-		if (r == ' ') space++; else if (r == '\n') break;
-	}
-	file.seekg(0, ios::beg);
-
-	int n1 = num / (space + 1), m1 = space + 1;
-	m = m1;
-	n = n1;
-	matr = new double*[n];
-	for (int i = 0; i < n; i++)
-	{
-		matr[i] = new double[m];
-	}
-	for (int i = 0; i < n1; i++)
-		for (int j = 0; j < m1; j++)
-			file >> matr[i][j];
-	file.close();
+	return complex(real + b.real, image + b.image);
 }
-matrix matrix:: operator+(matrix b)const
+complex complex::diff(complex b) const
 {
+	return complex(real - b.real, image - b.image);
+}
+complex& complex::operator +=(const complex& a)
+{
+	*this = this->summ(a);
+	return *this;
+}
+complex& complex::operator -=(const complex& a)
+{
+	*this = this->diff(a);
+	return *this;
+}
 
-	matrix c(n, m);
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < m; j++)
-			c.matr[i][j] = matr[i][j] + b.matr[i][j];
 
-	return c;
+bool complex::operator ==(const complex& a) const
+{
+	return ((this->real == a.real) && (this->image == a.image));
+}
+complex& complex::operator =(const complex& a)
+{
+	image = a.image;
+	real = a.real;
+	return *this;
 
 }
-matrix matrix:: operator*(matrix b)const
+complex complex::operator *(const complex& a) const
 {
-
-	matrix c(n, b.m);
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < b.m; j++)
-			for (int k = 0; k < b.n; k++)
-				c.matr[i][j] += matr[i][k] * b.matr[k][j];
-
-	return c;
-
+	return complex(real*a.real - image*a.image, real*a.image + image*a.real);
 
 }
-bool matrix:: operator == (matrix &b) const
+complex complex::operator /(const complex& a) const
 {
-	if ((this->m == b.m) && (this->n == b.n))
-	{
-		for (int i = 0; i < n; i++)
-			for (int j = 0; j < m; j++)
-				if (this->matr[i][j] == b.matr[i][j])
-					return true; else
-				{
-					return false;
-				}
-	}
-	else return false;
+	
+	return complex((real*a.real + image*a.image) /( a.image*a.image + a.real*a.real), (image*a.real - real*a.image ) / (a.image*a.image + a.real*a.real));
 
 }
-matrix matrix:: operator =(matrix &b)
+complex& complex::operator *=(const complex& a)
 {
-	if (*this == b) return *this; else
-	{
-		for (int i = 0; i < n; i++)
-		{
-			delete[] matr[i];
-		}
-		delete[] matr;
-
-		m = b.m;
-		n = b.n;
-		matr = new double*[n];
-		for (int i = 0; i < n; i++)
-		{
-			matr[i] = new double[m];
-		}
-		for (int i = 0; i < n; i++)
-			for (int j = 0; j < m; j++)
-				matr[i][j] = b.matr[i][j];
-		return *this;
-	}
-
+	*this = *this *a;
+	return *this;
 }
-int matrix::rows()
+complex& complex::operator /=(const complex& a)
 {
-	return n;
+	*this = *this / a;
+	return *this;
 }
-int matrix::columns()
-{
-	return m;
-}
-istream& operator >> (istream &in, matrix &c)
-{
-	in >> c.m;
-	in >> c.n;
-	c.matr = new double*[c.n];
-	for (int i = 0; i < c.n; i++)
-	{
-		c.matr[i] = new double[c.m];
-	}
-	for (int i = 0; i < c.n; i++)
-		for (int j = 0; j < c.m; j++)
-			c.matr[i][j] = 0;
 
-	for (int i = 0; i < c.n; i++)
-		for (int j = 0; j < c.m; j++)
-			in >> c.matr[i][j];
-	return in;
-}
-ostream& operator <<(ostream &out, matrix &c)
+std::ostream& operator <<(std::ostream& out, complex& a)
 {
-
-	out << c.m << "x";
-	out << c.n << "\n";
-	c.print(out);
+	out << a.real << "+" << a.image << "i" << endl;
 	return out;
 }
-double matrix:: elem(int i, int j)
+std::istream& operator >> (std::istream& in, complex& a)
 {
-	return matr[i][j];
+	in >> a.real;
+	in >> a.image;
+	return in;
 }
+double complex::im()
+{
+	return image;
+}
+double complex::re()
