@@ -1,30 +1,47 @@
-
 #include <iostream>
-#include <fstream>
-#include <string>
+#include <ctime>
+#include <locale>
+
 
 using namespace std;
 
-class matrix 
+class complex
 {
 private:
-	double **matr;
-	int m, n;
-
+	double real;
+	double image;
 public:
-	matrix();
-	matrix(int n1, int m1);
-	matrix(matrix& ob);
-	~matrix();
-	void print(ostream &out) const;
-	matrix(string name);
-	matrix operator +(matrix b) const;
-	matrix operator *(matrix b) const;
-	matrix operator =(matrix &b);
-	bool operator == (matrix &b) const;
-	friend  ostream& operator <<(ostream &out, matrix &c);
-	friend  istream& operator >> (istream &in, matrix &c);
-	int rows();
-	int columns();
-	double elem(int i, int j);
+	complex() {};
+	complex(double r, double i)
+	{
+		real = r;
+		image = i;
+	};
+	~complex() {};
+
+	void print(ostream &out);
+	complex mult(int k) const;
+	complex div(int k) const;
+	complex summ(complex b) const;
+	complex diff(complex b) const;
+	complex(const complex& a)
+	{
+		real = a.real;
+		image = a.image;
+	}
+	complex operator *(const complex& a) const;
+	complex operator /(const complex&) const;
+	complex& operator +=(const complex&);
+	complex& operator -=(const complex&);
+	complex& operator *=(const complex&);
+	complex& operator /=(const complex&);
+	complex& operator =(const complex&);
+	bool operator ==(const complex&) const;
+
+
+
+
+friend std::ostream& operator <<(std::ostream& out, complex& a);
+friend std::istream& operator >> (std::istream& in, complex& a);
+
 };
