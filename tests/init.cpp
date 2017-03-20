@@ -72,7 +72,7 @@ SCENARIO("summ")
 }
 SCENARIO("mult") 
 {
-	complex b(3, 3), c(0,0);
+	complex b(3, 3), c(9,9);
 	b=b.mult(3);
 	REQUIRE(b==c);
 }
