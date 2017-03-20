@@ -37,7 +37,8 @@ public:
 	complex& operator /=(const complex&);
 	complex& operator =(const complex&);
 	bool operator ==(const complex&) const;
-
+	double im();
+	double re();
 
 
 
