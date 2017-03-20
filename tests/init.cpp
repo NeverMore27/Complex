@@ -42,7 +42,7 @@ SCENARIO("/")
 {
 	complex b(3, 3), a(9,9), c(3, 0);
 	a/=b;
-	REQUIRE(b==c);
+	REQUIRE(a==c);
 }
 
 SCENARIO("==") 
