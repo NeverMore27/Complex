@@ -23,29 +23,3 @@ SCENARIO("copy")
 	
 }
 
-SCENARIO("+")
-{
-	complex a (4, 4), b(a);
-	complex c(8, 8);
-	REQUIRE(a + b== c);
-}
-
-SCENARIO("*") 
-{
-	matrix a ("matrix1.txt");
-	matrix b ("matrix2.txt");
-	matrix c ("matrix2.txt");
-	REQUIRE(a*b==c);
-}
-SCENARIO("==") 
-{
-	matrix a(3, 3);
-	matrix b (a);
-	REQUIRE(a == b);
-}
-
-SCENARIO("=") {
-	matrix a(2, 2);
-	matrix f = a;
-	REQUIRE(f == a);
-}
