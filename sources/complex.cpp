@@ -82,3 +82,6 @@ double complex::im()
 	return image;
 }
 double complex::re()
+{
+	return real;
+}
