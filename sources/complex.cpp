@@ -59,12 +59,14 @@ complex complex::operator /(const complex& a) const
 }
 complex& complex::operator *=(const complex& a)
 {	
-	*this = *this *a;
+	real=real*a.real - image*a.image;
+	image=real*a.image + image*a.real;
 	return *this;
 }
 complex& complex::operator /=(const complex& a)
 {	
-	*this = *this /a;
+	real=(real*a.real + image*a.image) /( a.image*a.image + a.real*a.real);
+	image=(image*a.real - real*a.image ) / (a.image*a.image + a.real*a.real)
 	return *this;
 }
 
